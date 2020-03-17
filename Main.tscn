@@ -1,0 +1,121 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = \"text\"
+
+onready var Balls = preload(\"res://LittleBall.tscn\")
+
+var rng = RandomNumberGenerator.new()
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	var WindowSize = OS.window_size
+	for _c in range(10):
+		var Ball = Balls.instance()
+		Ball.position.x = rng.randi_range(0, WindowSize[0] - 1)
+		Ball.position.y = rng.randi_range(0, WindowSize[1] - 1)
+		var SignX = rng.randi_range(0, 1)
+		if SignX == 0:
+			SignX = -1
+		var SignY = rng.randi_range(0, 1)
+		if SignY == 0:
+			SignY = -1
+		Ball.Speed = Vector2(SignX * rng.randi_range(350, 600), SignY * rng.randi_range(350, 600))
+		if _c == 4:
+			Ball.State = 2
+		if _c == 3 or _c == 2:
+			Ball.Choques = 10
+		add_child(Ball)
+	
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+"
+
+[sub_resource type="RectangleShape2D" id=2]
+
+[node name="World" type="Node"]
+script = SubResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -19.4802
+margin_top = -25.3243
+margin_right = 38.5198
+margin_bottom = 19.6757
+color = Color( 0.752941, 0.752941, 0.752941, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+position = Vector2( 0, 300 )
+scale = Vector2( 1, 30 )
+shape = SubResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="LeftWall/CollisionShape2D"]
+margin_top = -10.0
+margin_right = 10.0
+margin_bottom = 10.0
+color = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BottomWall" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomWall"]
+position = Vector2( 512, 600 )
+scale = Vector2( 51, 1 )
+shape = SubResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="BottomWall/CollisionShape2D"]
+margin_left = -10.0
+margin_top = -10.0
+margin_right = 10.0
+color = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UpperWall" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperWall"]
+position = Vector2( 512, 0 )
+scale = Vector2( 51, 1 )
+shape = SubResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="UpperWall/CollisionShape2D"]
+margin_left = -10.0
+margin_right = 10.0
+margin_bottom = 10.0
+color = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+position = Vector2( 1024, 300 )
+scale = Vector2( 1, 30 )
+shape = SubResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="RightWall/CollisionShape2D"]
+margin_left = -10.0
+margin_top = -10.0
+margin_bottom = 10.0
+color = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
